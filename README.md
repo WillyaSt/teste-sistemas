@@ -1,2 +1,1 @@
-# teste-sistemas
-TURMA SENAI - TESTE DE SISTEMAS
+# Capa do Projeto
