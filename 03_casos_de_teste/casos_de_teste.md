@@ -5,18 +5,21 @@ Descrição: Validar registro com dados corretos.
 Pré-condição: Email não cadastrado.
 Entrada: Nome João Silva, Email joao@email.com, Senha Senha123, Perfil USER.
 Resultado Esperado: Usuário cadastrado com sucesso. HTTP 201 Created.
+
 CT02 – Registrar usuário com email duplicado
 Requisito: RN01
 Descrição: Validar que email não pode ser repetido.
 Pré-condição: Email já existente.
 Entrada: Nome Maria, Email joao@email.com, Senha Maria123, Perfil USER.
 Resultado Esperado: Erro de duplicidade. HTTP 400 Bad Request.
+
 CT03 – Registrar usuário com senha inválida
 Requisito: RN02
 Descrição: Validar regra mínima de senha.
 Pré-condição: Nenhuma.
 Entrada: Nome Carlos, Email carlos@email.com, Senha abcdefg, Perfil USER.
 Resultado Esperado: Erro de validação de senha. HTTP 400 Bad Request.
+
 CT04 – Login com credenciais válidas
 Requisito: RF02, RF03
 Descrição: Validar autenticação correta.
