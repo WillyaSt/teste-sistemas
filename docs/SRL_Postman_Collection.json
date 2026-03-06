@@ -1,0 +1,1058 @@
+{
+	"info": {
+		"name": "Sistema SRL - Testes Completos",
+		"description": "Collection completa para testes da API do Sistema de Reservas de Laboratório",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Autenticação",
+			"item": [
+				{
+					"name": "CT01 - Registrar ADMIN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Admin Silva\",\n  \"email\": \"admin@teste.com\",\n  \"password\": \"admin123\",\n  \"role\": \"ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Registra um novo usuário com perfil ADMIN"
+					},
+					"response": []
+				},
+				{
+					"name": "CT02 - Registrar USER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"João Aluno\",\n  \"email\": \"joao@teste.com\",\n  \"password\": \"joao1234\",\n  \"role\": \"USER\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Registra um novo usuário com perfil USER"
+					},
+					"response": []
+				},
+				{
+					"name": "CT03 - Registrar Email Duplicado (Negativo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Maria Santos\",\n  \"email\": \"admin@teste.com\",\n  \"password\": \"maria123\",\n  \"role\": \"USER\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Teste negativo: tentar registrar email já existente"
+					},
+					"response": []
+				},
+				{
+					"name": "CT04 - Registrar Senha Fraca (Negativo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Pedro Costa\",\n  \"email\": \"pedro@teste.com\",\n  \"password\": \"senha\",\n  \"role\": \"USER\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Teste negativo: senha com menos de 8 caracteres"
+					},
+					"response": []
+				},
+				{
+					"name": "CT05 - Login ADMIN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Salvar token do ADMIN\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"token_admin\", jsonData.token);",
+									"    pm.expect(jsonData.role).to.eql(\"ADMIN\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@teste.com\",\n  \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login como ADMIN e salva token automaticamente"
+					},
+					"response": []
+				},
+				{
+					"name": "CT06 - Login USER",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Salvar token do USER\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"token_user\", jsonData.token);",
+									"    pm.expect(jsonData.role).to.eql(\"USER\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"joao@teste.com\",\n  \"password\": \"joao1234\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login como USER e salva token automaticamente"
+					},
+					"response": []
+				},
+				{
+					"name": "CT07 - Login Inválido (Negativo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@teste.com\",\n  \"password\": \"senhaerrada\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Teste negativo: credenciais inválidas"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Salas",
+			"item": [
+				{
+					"name": "CT08 - Criar Sala como ADMIN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Lab 101\",\n  \"capacity\": 30,\n  \"resources\": [\"projetor\", \"ar-condicionado\", \"computadores\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/rooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms"
+							]
+						},
+						"description": "Cria sala como ADMIN"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_admin}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT09 - Criar Sala Lab 102",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Lab 102\",\n  \"capacity\": 25,\n  \"resources\": [\"projetor\", \"quadro\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/rooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms"
+							]
+						}
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_admin}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT10 - Criar Sala Lab 103",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Lab 103\",\n  \"capacity\": 20,\n  \"resources\": [\"computadores\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/rooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms"
+							]
+						}
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_admin}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT11 - Criar Sala como USER (Negativo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Lab 999\",\n  \"capacity\": 15,\n  \"resources\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/rooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms"
+							]
+						},
+						"description": "Teste negativo: USER não pode criar salas"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT12 - Criar Sala Duplicada (Negativo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Lab 101\",\n  \"capacity\": 15,\n  \"resources\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/rooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms"
+							]
+						},
+						"description": "Teste negativo: nome de sala duplicado"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_admin}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT13 - Criar Sala Capacidade Zero (Negativo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Lab 104\",\n  \"capacity\": 0,\n  \"resources\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/rooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms"
+							]
+						},
+						"description": "Teste negativo: capacidade inválida"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_admin}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT14 - Listar Salas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms"
+							]
+						},
+						"description": "Lista todas as salas cadastradas"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT15 - Listar Salas Sem Token (Negativo)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms"
+							]
+						},
+						"description": "Teste negativo: sem autenticação"
+					},
+					"response": [],
+					"auth": {
+						"type": "noauth"
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Reservas",
+			"item": [
+				{
+					"name": "CT16 - Criar Reserva Válida",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"room_id\": 1,\n  \"date\": \"2026-03-15\",\n  \"start_time\": \"10:00\",\n  \"end_time\": \"12:00\",\n  \"purpose\": \"Aula de Algoritmos\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Cria reserva válida"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT17 - Reserva com Conflito (Negativo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"room_id\": 1,\n  \"date\": \"2026-03-15\",\n  \"start_time\": \"11:00\",\n  \"end_time\": \"13:00\",\n  \"purpose\": \"Outra atividade\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Teste negativo: conflito de horário"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT18 - Reserva Sala Diferente Mesmo Horário",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"room_id\": 2,\n  \"date\": \"2026-03-15\",\n  \"start_time\": \"10:00\",\n  \"end_time\": \"12:00\",\n  \"purpose\": \"Aula de Banco de Dados\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Salas diferentes permitem mesmo horário"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT19 - Hora Início > Término (Negativo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"room_id\": 1,\n  \"date\": \"2026-03-15\",\n  \"start_time\": \"14:00\",\n  \"end_time\": \"13:00\",\n  \"purpose\": \"Teste\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Teste negativo: horário inválido"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT20 - Reserva Antes 08h (Negativo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"room_id\": 1,\n  \"date\": \"2026-03-15\",\n  \"start_time\": \"07:00\",\n  \"end_time\": \"09:00\",\n  \"purpose\": \"Estudo\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Teste negativo: fora do horário permitido"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT21 - Reserva Depois 22h (Negativo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"room_id\": 1,\n  \"date\": \"2026-03-15\",\n  \"start_time\": \"21:00\",\n  \"end_time\": \"23:00\",\n  \"purpose\": \"Projeto\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Teste negativo: fora do horário permitido"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT22 - Reserva Sala Inexistente (Negativo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"room_id\": 999,\n  \"date\": \"2026-03-15\",\n  \"start_time\": \"14:00\",\n  \"end_time\": \"16:00\",\n  \"purpose\": \"Teste\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Teste negativo: sala não existe"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT23 - Listar Minhas Reservas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/bookings/my",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								"my"
+							]
+						},
+						"description": "Lista apenas reservas do usuário logado"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Incidentes",
+			"item": [
+				{
+					"name": "CT24 - Abrir Incidente como USER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"room_id\": 1,\n  \"description\": \"Projetor não está funcionando corretamente\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/incidents",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"incidents"
+							]
+						},
+						"description": "Abre incidente como USER"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT25 - Abrir Incidente como ADMIN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"room_id\": 2,\n  \"description\": \"Ar-condicionado não liga, necessário reparo urgente\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/incidents",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"incidents"
+							]
+						},
+						"description": "Abre incidente como ADMIN"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_admin}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT26 - Incidente Descrição Curta (Negativo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"room_id\": 1,\n  \"description\": \"Quebrado\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/incidents",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"incidents"
+							]
+						},
+						"description": "Teste negativo: descrição muito curta"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT27 - Fechar Incidente como ADMIN",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/incidents/1/close",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"incidents",
+								"1",
+								"close"
+							]
+						},
+						"description": "Fecha incidente como ADMIN"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_admin}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT28 - Fechar Incidente como USER (Negativo)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/incidents/2/close",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"incidents",
+								"2",
+								"close"
+							]
+						},
+						"description": "Teste negativo: USER não pode fechar incidentes"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_user}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT29 - Fechar Incidente Já Fechado (Negativo)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/incidents/1/close",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"incidents",
+								"1",
+								"close"
+							]
+						},
+						"description": "Teste negativo: incidente já fechado"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_admin}}",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"name": "CT30 - Fechar Incidente Inexistente (Negativo)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/incidents/999/close",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"incidents",
+								"999",
+								"close"
+							]
+						},
+						"description": "Teste negativo: incidente não existe"
+					},
+					"response": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token_admin}}",
+								"type": "string"
+							}
+						]
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "default"
+		}
+	]
+}
