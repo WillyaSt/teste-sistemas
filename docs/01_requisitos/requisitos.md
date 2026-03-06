@@ -1,4 +1,4 @@
-# Sistema de Reservas de Laboratório (SRL)
+## Sistema de Reservas de Laboratório (SRL)
 ## Documento de Requisitos – Versão 1.0
 
 # 1. Contexto do Sistema
