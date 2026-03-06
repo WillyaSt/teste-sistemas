@@ -119,11 +119,9 @@ Os testes serão considerados concluídos quando:
 
 | Papel | Responsabilidade | Nome/Equipe |
 |-------|------------------|-------------|
-| **Analista de Testes** | Planejamento e documentação dos testes | Equipe de QA |
-| **Testador** | Execução dos casos de teste | Equipe de QA |
-| **Desenvolvedor** | Correção de bugs identificados | Equipe de Desenvolvimento |
-| **Tech Lead** | Revisão e aprovação dos resultados | Líder Técnico |
-| **Product Owner** | Validação de requisitos e aceite final | Gerente de Produto |
+
+| **Testador** | Willyam Douglas |
+
 
 ---
 
